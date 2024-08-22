@@ -8,6 +8,7 @@ import Nav from './Nav';
 import MobileNav from './MobileNav';
 import SearchBar from './SearchBar';
 import Avatar from './Avatar';
+import CustomButton from './CustomButton';
 
 const Header = () => {
   const [data, setData] = useState({ body: '' });
@@ -31,7 +32,7 @@ const Header = () => {
         {/*desktop nav and button login/logout and avatar */}
         <div className="hidden xl:flex items-center gap-12">
           <Nav />
-          <Button>Login</Button>
+          <CustomButton text={"logout"}/>
           {/*usar cuando el usuario este logueado y colocarle su imagen, si no hay un usuario
           logueado poner imagen en negro */}
           <Avatar />
