@@ -1,7 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Button } from './ui/button';
+import axios from 'axios';
 
 //components
 import Nav from './Nav';
@@ -11,41 +11,70 @@ import Avatar from './Avatar';
 import CustomButton from './CustomButton';
 
 const Header = () => {
+  const [user, setUser] = useState(null);
   const [data, setData] = useState({ body: '' });
+
+  useEffect(() => {
+    // Obtener el usuario de localStorage cuando el componente se monta
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
+
   const handleChange = (e) => {
     setData({ body: e.target.value });
   };
 
+  const logout = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/api/users/logout',
+        {},
+        { withCredentials: true }, // Esto asegura que las cookies se envíen con la solicitud
+      );
+      if (response.status === 204) {
+        // Eliminar el usuario de localStorage y del estado
+        localStorage.removeItem('user');
+        setUser(null);
+        // Redireccionar al login
+        window.location.href = '/auth';
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
   return (
-    <header className="py-8 xl:py-3 text-white">
-      <div className="container mx-auto flex justify-between items-center">
-        {/*logo */}
-        <Link href="/">
-          <h1 className="text-4xl font-semibold text-accent">TMDB</h1>
-        </Link>
+    <>
+      {user && (
+        <header className="py-8 xl:py-3 text-white">
+          <div className="container mx-auto flex justify-between items-center">
+            {/* Logo */}
+            <Link href="/">
+              <h1 className="text-4xl font-semibold text-accent">TMDB</h1>
+            </Link>
 
-        {/*search bar */}
-        <div className="xl:hidden">
-          {' '}
-          <SearchBar change={handleChange} />
-        </div>
-        {/*desktop nav and button login/logout and avatar */}
-        <div className="hidden xl:flex items-center gap-12">
-          <Nav />
-          <CustomButton text={"logout"}/>
-          {/*usar cuando el usuario este logueado y colocarle su imagen, si no hay un usuario
-          logueado poner imagen en negro */}
-          <Avatar />
-        </div>
+            {/* Search bar */}
+            <div className="xl:hidden">
+              <SearchBar change={handleChange} />
+            </div>
 
-        {/*mobile nav */}
+            {/* Desktop nav and button login/logout and avatar */}
+            <div className="hidden xl:flex items-center gap-12">
+              <Nav />
+              <CustomButton text={'logout'} onClick={logout} />
+              <Avatar />
+            </div>
 
-        <div className="xl:hidden flex items center gap-6">
-          <Avatar />
-          <MobileNav />
-        </div>
-      </div>
-    </header>
+            {/* Mobile nav */}
+            <div className="xl:hidden flex items-center gap-6">
+              <Avatar />
+              <MobileNav />
+            </div>
+          </div>
+        </header>
+      )}
+    </>
   );
 };
 
