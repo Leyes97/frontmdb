@@ -19,6 +19,7 @@ const Header = () => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(storedUser);
+      
     }
   }, []);
 
@@ -38,7 +39,7 @@ const Header = () => {
         localStorage.removeItem('user');
         setUser(null);
         // Redireccionar al login
-        window.location.href = '/auth';
+        window.location.href = '/login';
       }
     } catch (error) {
       console.error('An error occurred:', error);
