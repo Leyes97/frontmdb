@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/slice';
 
-const Auth = () => {
+const Login = () => {
   const [authenticator, setAuthenticator] = useState(false);
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
@@ -264,4 +264,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default Login;
