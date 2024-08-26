@@ -11,7 +11,8 @@ const CustomButton = ({ text, onClick }) => {
       <span className="ease absolute bottom-0 right-0 h-0 w-0 border-b-2 border-accent transition-all duration-200 group-hover:w-full"></span>
       <span className="ease absolute bottom-0 left-0 h-0 w-0 border-l-2 border-accent transition-all duration-200 group-hover:h-full"></span>
       <span className="flex justify-center flex-wrap p-2">
-        {text} <SlLogout className="text-sm " />
+        {text}
+        <SlLogout className="text-lg pl-1.5 " />
       </span>
     </div>
   );

@@ -1,23 +1,36 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchCinema = createAsyncThunk('cinema/fetchCinema', async () => {
-  try {
-    const response = await axios.get('http://localhost:8080/api/movies/cinema');
-    return response.data;
-  } catch (error) {
-    console.log('HAY UN PROBLEMA CON EL PEDIDO CINEMA', error);
-  }
-});
+export const fetchCinema = createAsyncThunk(
+  'cinema/fetchCinema',
+  async (page = 1) => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8080/api/movies/cinema',
+        {
+          params: { page },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      console.log('HAY UN PROBLEMA CON EL PEDIDO CINEMA', error);
+    }
+  },
+);
 
 const cinemaSlice = createSlice({
   name: 'cinema',
   initialState: {
     data: [],
+    page: 1,
     status: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCinema.pending, (state) => {
@@ -25,7 +38,7 @@ const cinemaSlice = createSlice({
       })
       .addCase(fetchCinema.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data = action.payload;
+        state.data = [...state.data, ...action.payload.results];
       })
       .addCase(fetchCinema.rejected, (state, action) => {
         state.status = 'failed';
@@ -33,5 +46,5 @@ const cinemaSlice = createSlice({
       });
   },
 });
-
+export const { setPage } = cinemaSlice.actions;
 export default cinemaSlice.reducer;

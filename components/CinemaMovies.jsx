@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchCinema } from '@/app/store/cinemaSlice';
+import { fetchCinema, setPage } from '@/app/store/cinemaSlice';
 import { PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi';
 import { baseUrl } from '@/constants/movie';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,16 +10,24 @@ import Image from 'next/image';
 
 const CinemaMovies = () => {
   const cinema = useSelector((state) => state.cinema.data);
+  const currentPage = useSelector((state) => state.cinema.page);
   const swiperRef = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCinema());
-  }, [dispatch]);
+  
+    dispatch(fetchCinema(Number(currentPage)));
+  }, [dispatch, currentPage]);
+
+  const handleReachEnd = () => {
+    const nextPage = Number(currentPage) + 1; 
+    dispatch(setPage(nextPage)); 
+    dispatch(fetchCinema(nextPage)); 
+  };
 
   return (
-    <div className="container mx-auto relative w-full">
-      <h1 className="font-bold uppercase">Now Playing</h1>
+    <div className="container mx-auto relative w-full mb-3">
+      <h1 className="font-bold uppercase text-2xl">Now Playing</h1>
       <div className="relative flex flex-col xl:flex-row xl:gap-[20px] w-full">
         <div className="w-full relative h-[30vh]">
           <Swiper
@@ -27,9 +35,7 @@ const CinemaMovies = () => {
             spaceBetween={20}
             slidesPerView={12}
             className="h-full w-full"
-            onSlideChange={(swiper) => {
-              // Aquí puedes manejar cualquier lógica adicional que necesites cuando cambie el slide
-            }}
+            onReachEnd={handleReachEnd}
             breakpoints={{
               0: { slidesPerView: 2 },
               640: { slidesPerView: 3 },
@@ -37,7 +43,7 @@ const CinemaMovies = () => {
               1024: { slidesPerView: 6 },
               1200: { slidesPerView: 8 },
             }}>
-            {cinema?.results?.map((project, index) => (
+            {cinema.map((project, index) => (
               <SwiperSlide key={index} className="w-full">
                 <div className="relative w-full h-full overflow-hidden hover:scale-110 rounded-2xl">
                   <Image
