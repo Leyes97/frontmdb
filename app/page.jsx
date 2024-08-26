@@ -1,42 +1,55 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
+import axios from 'axios';
 import { baseUrl } from '@/constants/movie';
 
-//components
+// Components
 import PopularMovies from '@/components/PopularMovies';
 import CinemaMovies from '@/components/CinemaMovies';
 import UpcomingMovies from '@/components/UpcomingMovies';
 import TopMovies from '@/components/TopMovies';
 
 const Home = () => {
-  const bgPopular = useSelector((state) => state.popular.data);
+  const [randomImage, setRandomImage] = useState(null);
 
-  const randomImage = bgPopular?.results
-    ? bgPopular.results[Math.floor(Math.random() * bgPopular.results.length)]
-        .backdrop_path
-    : null;
+  useEffect(() => {
+    const fetchPopularMovies = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:8080/api/movies/popular',
+        );
+        const movies = response.data;
+
+        if (movies?.results && movies.results.length > 0) {
+          const randomMovie =
+            movies.results[Math.floor(Math.random() * movies.results.length)];
+          setRandomImage(randomMovie.backdrop_path);
+        }
+      } catch (error) {
+        console.error('Error al obtener películas populares:', error);
+      }
+    };
+
+    fetchPopularMovies();
+  }, []);
 
   return (
     <div
       className="min-h-screen"
       style={{
-        backgroundImage: randomImage
-          ? `url(${baseUrl}${randomImage})`
-          : 'none',
+        backgroundImage: randomImage ? `url(${baseUrl}${randomImage})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-      }}
-    >
+      }}>
       <motion.section
         initial={{ opacity: 0 }}
         animate={{
           opacity: 1,
           transition: { delay: 2.4, duration: 0.4, ease: 'easeIn' },
         }}
-        className="min-h-[30vh] flex flex-col justify-center py-12 xl:px-0 w-full"
-      >
+        className="min-h-[30vh] flex flex-col justify-center py-12 xl:px-0 w-full">
         <PopularMovies />
         <UpcomingMovies />
         <TopMovies />
