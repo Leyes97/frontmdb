@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { CiMenuFries } from 'react-icons/ci';
+import CustomButton from './CustomButton';
 
 const links = [
   {
@@ -30,6 +32,33 @@ const links = [
 const MobileNav = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
+
+  const logout = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/api/users/logout',
+        {},
+        { withCredentials: true }, // Esto asegura que las cookies se envíen con la solicitud
+      );
+      if (response.status === 204) {
+        // Eliminar el usuario de localStorage y del estado
+        localStorage.removeItem('user');
+        setUser(null);
+        // Redireccionar al login
+        window.location.href = '/login';
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
 
   const handleLinkClick = () => {
     setIsOpen(false);
@@ -43,9 +72,7 @@ const MobileNav = () => {
         {/*logo */}
         <div className="mt-32 mb-40 text-center text-2xl">
           <Link href="/" onClick={handleLinkClick}>
-            <h1 className="text-4xl font-semibold text-accent">
-           TMDB
-            </h1>
+            <h1 className="text-4xl font-semibold text-accent">TMDB</h1>
           </Link>
         </div>
         {/* nav */}
@@ -65,6 +92,7 @@ const MobileNav = () => {
             );
           })}
         </nav>
+        <CustomButton text={'logout'} onClick={logout} />
       </SheetContent>
     </Sheet>
   );
