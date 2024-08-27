@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchTop } from '@/app/store/topSlice';
+import { fetchTop, setPage } from '@/app/store/topSlice';
 import { PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi';
 import { baseUrl } from '@/constants/movie';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,12 +10,18 @@ import Image from 'next/image';
 
 const TopMovies = () => {
   const top = useSelector((state) => state.top.data);
+  const currentPage = useSelector((state) => state.top.page);
   const swiperRef = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchTop());
-  }, [dispatch]);
+    dispatch(fetchTop(currentPage));
+  }, [dispatch, currentPage]);
+
+  const handleReachEnd = () => {
+    dispatch(setPage(currentPage + 1));
+    dispatch(fetchTop(currentPage + 1));
+  };
 
   return (
     <div className="container mx-auto relative w-full mb-3">
@@ -27,9 +33,7 @@ const TopMovies = () => {
             spaceBetween={20}
             slidesPerView={12}
             className="h-full w-full"
-            onSlideChange={(swiper) => {
-              // Aquí puedes manejar cualquier lógica adicional que necesites cuando cambie el slide
-            }}
+            onReachEnd={handleReachEnd}
             breakpoints={{
               0: { slidesPerView: 2 },
               640: { slidesPerView: 3 },
@@ -37,7 +41,7 @@ const TopMovies = () => {
               1024: { slidesPerView: 6 },
               1200: { slidesPerView: 8 },
             }}>
-            {top?.results?.map((project, index) => (
+            {top?.map((project, index) => (
               <SwiperSlide key={index} className="w-full">
                 <div className="relative w-full h-full overflow-hidden hover:scale-110 rounded-2xl">
                   <Image

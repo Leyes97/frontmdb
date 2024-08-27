@@ -11,9 +11,14 @@ export const fetchCinema = createAsyncThunk(
           params: { page },
         },
       );
-      return response.data;
+      if (response.data && response.data.results) {
+        return response.data;
+      } else {
+        throw new Error('Data not in expected format');
+      }
     } catch (error) {
       console.log('HAY UN PROBLEMA CON EL PEDIDO CINEMA', error);
+      return { results: [] };
     }
   },
 );
@@ -38,7 +43,9 @@ const cinemaSlice = createSlice({
       })
       .addCase(fetchCinema.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data = [...state.data, ...action.payload.results];
+        if (action.payload && action.payload.results) {
+          state.data = [...state.data, ...action.payload.results];
+        }
       })
       .addCase(fetchCinema.rejected, (state, action) => {
         state.status = 'failed';
