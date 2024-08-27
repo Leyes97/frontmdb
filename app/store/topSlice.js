@@ -38,7 +38,13 @@ const TopSlice = createSlice({
       .addCase(fetchTop.fulfilled, (state, action) => {
         state.status = 'succeeded';
         if (action.payload && action.payload.results) {
-          state.data = [...state.data, ...action.payload.results];
+          const newResults = action.payload.results.filter(
+            (movie) =>
+              !state.data.some(
+                (existingMovie) => existingMovie.id === movie.id,
+              ),
+          );
+          state.data = [...state.data, ...newResults]; // Acumula los resultados sin duplicados
         }
       })
       .addCase(fetchTop.rejected, (state, action) => {
