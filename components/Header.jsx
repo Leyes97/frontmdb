@@ -19,7 +19,6 @@ const Header = () => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(storedUser);
-      
     }
   }, []);
 
@@ -49,7 +48,7 @@ const Header = () => {
     <>
       {user && (
         <header className="py-8 xl:py-3 text-white">
-          <div className="container mx-auto flex justify-between items-center">
+          <div className=" flex justify-between items-center mx-12">
             {/* Logo */}
             <Link href="/">
               <h1 className="text-4xl font-semibold text-accent">TMDB</h1>
@@ -64,12 +63,12 @@ const Header = () => {
             <div className="hidden xl:flex items-center gap-12">
               <Nav />
               <CustomButton text={'logout'} onClick={logout} />
-              <Avatar />
+            
             </div>
 
             {/* Mobile nav */}
             <div className="xl:hidden flex items-center gap-6">
-              <Avatar />
+             
               <MobileNav />
             </div>
           </div>

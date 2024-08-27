@@ -24,7 +24,7 @@ const UpcomingMovies = () => {
   };
 
   return (
-    <div className="container mx-auto relative w-full mb-3">
+    <div className=" relative w-full max-w-[95%] mb-3">
       <h1 className="font-bold uppercase text-2xl">Upcoming</h1>
       <div className="relative flex flex-col xl:flex-row xl:gap-[20px] w-full">
         <div className="w-full relative h-[30vh]">
@@ -57,12 +57,12 @@ const UpcomingMovies = () => {
           </Swiper>
           {/* Botones de navegación */}
           <button
-            className="swiper-button-prev absolute top-1/2 transform -translate-y-1/2 left-4 z-50 bg-transparent p-2 hover:bg-white/25 hover:scale-150 rounded-full"
+            className="swiper-button-prev absolute top-1/2 transform -translate-y-1/2 left-4 z-20 bg-transparent p-2 hover:bg-white/25 hover:scale-150 rounded-full"
             onClick={() => swiperRef.current.swiper.slidePrev()}>
             <PiCaretLeftBold className="text-white hover:text-primary/70 text-2xl" />
           </button>
           <button
-            className="swiper-button-next absolute top-1/2 transform -translate-y-1/2 right-4 z-50 bg-transparent p-2 hover:bg-white/25 hover:scale-150 rounded-full"
+            className="swiper-button-next absolute top-1/2 transform -translate-y-1/2 right-4 z-20 bg-transparent p-2 hover:bg-white/25 hover:scale-150 rounded-full"
             onClick={() => swiperRef.current.swiper.slideNext()}>
             <PiCaretRightBold className="text-white hover:text-primary/70 text-2xl" />
           </button>
