@@ -3,14 +3,22 @@ import axios from 'axios';
 
 export const fetchUpcoming = createAsyncThunk(
   'upcoming/fetchUpcoming',
-  async () => {
+  async (page = 1) => {
     try {
       const response = await axios.get(
         'http://localhost:8080/api/movies/upcoming',
+        {
+          params: { page },
+        },
       );
-      return response.data;
+      if (response.data && response.data.results) {
+        return response.data;
+      } else {
+        throw new Error('Data not in expectend format');
+      }
     } catch (error) {
       console.log('HAY UN PROBLEMA CON EL PEDIDO UPCOMING', error);
+      return { results: [] };
     }
   },
 );
@@ -19,10 +27,15 @@ const upcomingSlice = createSlice({
   name: 'upcoming',
   initialState: {
     data: [],
+    page: 1,
     status: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUpcoming.pending, (state) => {
@@ -30,7 +43,9 @@ const upcomingSlice = createSlice({
       })
       .addCase(fetchUpcoming.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data = action.payload;
+        if (action.payload && action.payload.results) {
+          state.data = [...state.data, ...action.payload.results];
+        }
       })
       .addCase(fetchUpcoming.rejected, (state, action) => {
         state.status = 'failed';
@@ -39,4 +54,5 @@ const upcomingSlice = createSlice({
   },
 });
 
+export const { setPage } = upcomingSlice.actions;
 export default upcomingSlice.reducer;
