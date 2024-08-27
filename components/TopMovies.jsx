@@ -24,7 +24,7 @@ const TopMovies = () => {
   };
 
   return (
-    <div className="container mx-auto relative w-full mb-3">
+    <div className="relative w-full max-w-[95%] mb-3">
       <h1 className="font-bold uppercase text-2xl">Top Rated</h1>
       <div className="relative flex flex-col xl:flex-row xl:gap-[20px] w-full">
         <div className="w-full relative h-[30vh]">

@@ -12,11 +12,6 @@ const links = [
     path: '/',
   },
   {
-    name: 'movies',
-    path: '/movies',
-  },
-
-  {
     name: 'favorite',
     path: '/work',
   },
