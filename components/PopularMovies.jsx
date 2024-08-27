@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPopular,setPage } from '@/app/store/popularSlice';
+import { fetchPopular, setPage } from '@/app/store/popularSlice';
 import { PiCaretLeftBold, PiCaretRightBold } from 'react-icons/pi';
 import { baseUrl } from '@/constants/movie';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -22,7 +22,6 @@ const PopularMovies = () => {
     dispatch(setPage(currentPage + 1)); // Incrementa la página
     dispatch(fetchPopular(currentPage + 1)); // Carga la siguiente página
   };
-console.log(popular);
 
   return (
     <div className="container mx-auto relative w-full mb-3">

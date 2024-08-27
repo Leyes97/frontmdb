@@ -5,12 +5,20 @@ export const fetchPopular = createAsyncThunk(
   'popular/fetchPopular',
   async (page = 1) => {
     try {
-      const response = await axios.get('http://localhost:8080/api/movies/popular', {
-        params: { page },
-      });
-      return response.data;
+      const response = await axios.get(
+        'http://localhost:8080/api/movies/popular',
+        {
+          params: { page },
+        },
+      );
+      if (response.data && response.data.results) {
+        return response.data;
+      } else {
+        throw new Error('Data not in expected format');
+      }
     } catch (error) {
       console.log('HAY UN PROBLEMA CON EL PEDIDO POPULAR', error);
+      return { results: [] }; // Devuelve un array vacío si hay un error
     }
   },
 );
@@ -35,8 +43,11 @@ const popularSlice = createSlice({
       })
       .addCase(fetchPopular.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.data = [...state.data, ...action.payload.results]; // Acumula los resultados
+        if (action.payload && action.payload.results) {
+          state.data = [...state.data, ...action.payload.results]; // Acumula los resultados
+        }
       })
+
       .addCase(fetchPopular.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
@@ -46,5 +57,3 @@ const popularSlice = createSlice({
 
 export const { setPage } = popularSlice.actions;
 export default popularSlice.reducer;
-
-
