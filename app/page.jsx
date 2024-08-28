@@ -13,7 +13,7 @@ import TopMovies from '@/components/TopMovies';
 
 const Home = () => {
   const [randomImage, setRandomImage] = useState(null);
- 
+
   useEffect(() => {
     const fetchPopularMovies = async () => {
       try {
@@ -56,7 +56,6 @@ const Home = () => {
         <TopMovies />
         <CinemaMovies />
       </motion.section>
-      
     </div>
   );
 };
