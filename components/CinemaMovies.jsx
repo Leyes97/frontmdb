@@ -46,7 +46,11 @@ const CinemaMovies = () => {
       const movieKey = response.data.videos.filter(
         (trailer) => trailer.type === 'Trailer',
       );
-      localDispatch({ type: 'SET_MOVIE_DATA', payload: movieKey });
+      const objMovie = {
+        id: response.data.id,
+        movieKey: movieKey,
+      };
+      localDispatch({ type: 'SET_MOVIE_DATA', payload: objMovie });
     } catch (error) {
       console.error('Error fetching movie by ID', error);
     }

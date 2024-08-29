@@ -13,12 +13,12 @@ const links = [
   },
   {
     name: 'favorite',
-    path: '/work',
+    path: '/favorite',
   },
 
   {
     name: 'Genres',
-    path: '/contact',
+    path: '/genres',
   },
 ];
 
