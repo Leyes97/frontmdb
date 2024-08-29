@@ -43,7 +43,8 @@ const Login = () => {
           if (response.status === 200) {
             // Si la autenticación es exitosa
             console.log('Login successful!');
-            localStorage.setItem('user', response.data);
+
+            localStorage.setItem('user', JSON.stringify(response.data));
             dispatch(login(response.data)); //----> seteo el estado global del usuario.
             window.location.href = '/'; // Redireccionar o hacer algo más después del login
           } else {
@@ -79,7 +80,8 @@ const Login = () => {
       if (response.status === 200) {
         // Si la autenticación es exitosa
         console.log('Login successful!');
-        localStorage.setItem('user', response.data);
+        console.log(response.data);
+        localStorage.setItem('user', JSON.stringify(response.data));
         dispatch(login(response.data)); //----> seteo el estado global del usuario.
         window.location.href = '/'; // Redireccionar o hacer algo más después del login
       } else {
