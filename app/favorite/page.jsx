@@ -5,6 +5,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import { FaPlay } from 'react-icons/fa';
 import { baseUrl } from '@/constants/movie';
+import { motion } from 'framer-motion';
 
 const FavoritePage = () => {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
@@ -58,7 +59,6 @@ const FavoritePage = () => {
         await axios.delete(
           `http://localhost:8080/api/users/remove/${user.id}/${movieId}`,
         );
-        // Filtra la película eliminada de la lista de favoritos y actualiza el estado
         const updatedFavoriteMovies = favoriteMovies.filter(
           (id) => id !== movieId,
         );
@@ -70,15 +70,27 @@ const FavoritePage = () => {
     }
   };
 
+  const message = "You haven't added any movies to your favorites yet...";
+  const letters = message.split('');
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-primary p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-screen-lg">
-        {movies.length > 0 ? (
-          movies.map((movie, index) => (
+    <div className="flex flex-col min-h-screen items-center justify-center bg-primary p-4">
+      {movies.length > 0 && (
+        <motion.h1
+          className="text-4xl text-white uppercase mb-8"
+          initial={{ opacity: 0, y: -150 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 4 }}>
+          Your Favorite Movies
+        </motion.h1>
+      )}
+
+      {movies.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-screen-lg">
+          {movies.map((movie, index) => (
             <div
               key={index}
               className="flex flex-col rounded-lg shadow-xl overflow-hidden bg-primary/25 h-full">
-              {/* Imagen de la película */}
               <div className="relative w-full h-64">
                 <Image
                   src={`${baseUrl}${movie.poster_path}`}
@@ -88,7 +100,7 @@ const FavoritePage = () => {
                   loading="lazy"
                 />
               </div>
-              {/* Contenido de la tarjeta */}
+
               <div className="flex-auto p-4 flex flex-col justify-between">
                 <div>
                   <h1 className="text-lg md:text-xl font-semibold text-white/80">
@@ -120,15 +132,31 @@ const FavoritePage = () => {
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <div
-            className="flex justify-center items-center text-4xl
-          ">
-            Aun no Agregaste  peliculas a favoritos...
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col justify-center items-center h-full w-full text-center overflow-hidden">
+          <div className="text-center w-full px-4">
+            {letters.map((letter, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: 4,
+                  delay: index * 0.1,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                }}
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl text-white break-all"
+                style={{ display: 'inline-block' }}>
+                {letter === ' ' ? '\u00A0' : letter}
+              </motion.span>
+            ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
