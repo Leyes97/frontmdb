@@ -1,41 +1,22 @@
-import React from 'react';
+import { BiSearchAlt } from 'react-icons/bi';
 
-const SearchBar = ({ change, submit }) => {
+const SearchBar = ({ value, onChange, onSubmit }) => {
   return (
-    <div className="flex-1 flex justify-center   xl:px28 ">
-      <div className=" w-44 xl:w-60">
-        <label htmlFor="search" className="sr-only">
-          Search{' '}
-        </label>
-        <form
-          onSubmit={submit}
-          methode="get"
-          action="#"
-          className="relative z-50">
-          <button
-            type="submit"
-            id="searchsubmit"
-            className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg
-              className="h-5 w-5 text-primary"
-              fill="currentColor"
-              viewBox="0 0 20 20">
-              <path
-                fillRule="evenodd"
-                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                clipRule="evenodd"></path>
-            </svg>
-          </button>
-          <input
-            type="text"
-            name="s"
-            id="s"
-            className="block w-full pl-10 pr-3 py-2 border border-transparent rounded-md leading-5 bg-white/80 text-primary placeholder-primary focus:outline-none focus:bg-white focus:text-gray-900 sm:text-sm transition duration-150 ease-in-out"
-            placeholder="Search"
-            onChange={change}
-          />
-        </form>
-      </div>
+    <div className="flex items-center justify-center bg-gradient-to-br">
+      <form onSubmit={onSubmit} className="relative mx-auto flex">
+        <input
+          type="search"
+          value={value}
+          onChange={onChange}
+          className="text-xs peer cursor-pointer relative z-10 h-8 w-10 rounded-lg border bg-transparent pr-6 outline-none focus:rounded-r-none focus:w-full focus:cursor-text focus:border-taupeGray focus:px-3"
+          placeholder="search for your movie"
+        />
+        <button
+          type="submit"
+          className="absolute top-0 right-0 bottom-0 my-auto h-8 w-10 px-3 bg-white/20 rounded-lg peer-focus:relative peer-focus:rounded-l-none">
+          <BiSearchAlt className="text-white" />
+        </button>
+      </form>
     </div>
   );
 };
