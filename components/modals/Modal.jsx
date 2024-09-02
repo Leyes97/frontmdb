@@ -89,12 +89,12 @@ const Modal = ({ isOpen, setIsOpen, movieData, children }) => {
         <div className="flex justify-end mt-4">
           {isFavorite ? (
             <MdOutlineFavorite
-              className="text-4xl text-pink-700"
+              className="text-4xl text-pink-700  cursor-pointer"
               onClick={handleFavoriteClick}
             />
           ) : (
             <MdOutlineFavoriteBorder
-              className="text-4xl text-white"
+              className="text-4xl text-white  cursor-pointer"
               onClick={handleFavoriteClick}
             />
           )}

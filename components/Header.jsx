@@ -12,18 +12,28 @@ import CustomButton from './CustomButton';
 
 const Header = () => {
   const [user, setUser] = useState(null);
-  const [data, setData] = useState({ body: '' });
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    // Obtener el usuario de localStorage cuando el componente se monta
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(storedUser);
     }
   }, []);
 
-  const handleChange = (e) => {
-    setData({ body: e.target.value });
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // // Aquí se puede manejar la lógica de búsqueda
+    // // Por ejemplo, redirigir a una página de resultados o hacer una llamada a la API
+    // if (searchQuery.trim()) {
+    //   // Ejemplo de redirección a una página de resultados de búsqueda
+    //   window.location.href = `/search?query=${encodeURIComponent(
+    //     searchQuery.trim(),
+    //   )}`;
+    // }
   };
 
   const logout = async () => {
@@ -31,19 +41,19 @@ const Header = () => {
       const response = await axios.post(
         'http://localhost:8080/api/users/logout',
         {},
-        { withCredentials: true }, // Esto asegura que las cookies se envíen con la solicitud
+        { withCredentials: true },
       );
       if (response.status === 204) {
-        // Eliminar el usuario de localStorage y del estado
         localStorage.removeItem('user');
         setUser(null);
-        // Redireccionar al login
+
         window.location.href = '/login';
       }
     } catch (error) {
       console.error('An error occurred:', error);
     }
   };
+
   return (
     <>
       {user && (
@@ -52,7 +62,7 @@ const Header = () => {
             {/* Logo */}
             <Link href="/">
               <motion.h1
-                initial={{ opacity: 0, y:-60 }}
+                initial={{ opacity: 0, y: -60 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 4 }}
                 className="text-4xl font-semibold text-accent">
@@ -62,7 +72,11 @@ const Header = () => {
 
             {/* Search bar */}
             <div className="xl:hidden">
-              <SearchBar change={handleChange} />
+              <SearchBar
+                value={searchQuery}
+                onChange={handleSearchChange}
+                onSubmit={handleSearchSubmit}
+              />
             </div>
 
             {/* Desktop nav and button login/logout and avatar */}
