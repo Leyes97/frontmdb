@@ -1,7 +1,6 @@
-import Link from 'next/link';
 import { SlLogin, SlLogout } from 'react-icons/sl';
 
-const CustomButton = ({ text, onClick }) => {
+const CustomButton = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
@@ -10,8 +9,7 @@ const CustomButton = ({ text, onClick }) => {
       <span className="ease absolute right-0 top-0 h-0 w-0 border-r-2 border-accent transition-all duration-200 group-hover:h-full"></span>
       <span className="ease absolute bottom-0 right-0 h-0 w-0 border-b-2 border-accent transition-all duration-200 group-hover:w-full"></span>
       <span className="ease absolute bottom-0 left-0 h-0 w-0 border-l-2 border-accent transition-all duration-200 group-hover:h-full"></span>
-      <span className="flex justify-center flex-wrap p-2">
-        {text}
+      <span className="flex justify-center flex-wrap p-1">
         <SlLogout className="text-lg pl-1.5 " />
       </span>
     </div>

@@ -4,6 +4,7 @@ import popularReducer from './popularSlice';
 import cinemaReducer from './cinemaSlice';
 import upcomingReducer from './upcomingSlice';
 import topReducer from './topSlice';
+import searchReducer from './searchSlice';
 
 export default configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
     cinema: cinemaReducer,
     upcoming: upcomingReducer,
     top: topReducer,
+    search: searchReducer,
   },
 });
