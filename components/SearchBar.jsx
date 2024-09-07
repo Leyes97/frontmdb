@@ -19,7 +19,6 @@ const SearchBar = () => {
   };
 
   useEffect(() => {
-    // Limpiar el estado cuando el campo de búsqueda esté vacío
     if (searchQuery.trim() === '') {
       dispatch(clearMovies());
     }
