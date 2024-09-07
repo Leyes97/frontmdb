@@ -65,16 +65,12 @@ const Modal = ({ isOpen, setIsOpen, movieData, children }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Background overlay */}
       <div
         className="fixed inset-0 bg-black opacity-50"
         onClick={handleClose}></div>
-
-      {/* Modal content */}
       <div className="relative bg-white/5 p-6 rounded-lg shadow-lg w-[90%] max-w-3xl mx-auto">
         {children}
         <div className="w-full h-0 pb-[56.25%] relative mt-4 mb-4">
-          {/* 16:9 Aspect Ratio */}
           <YouTube
             videoId={movieData.movieKey[0]?.key}
             opts={{
@@ -85,7 +81,6 @@ const Modal = ({ isOpen, setIsOpen, movieData, children }) => {
             className="absolute inset-0 w-full h-full"
           />
         </div>
-        {/* Container for favorite button */}
         <div className="flex justify-end mt-4">
           {isFavorite ? (
             <MdOutlineFavorite

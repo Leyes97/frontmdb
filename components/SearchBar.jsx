@@ -1,11 +1,15 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { useDispatch } from 'react-redux';
 import { fetchMovies, clearMovies } from '@/app/store/searchSlice';
+import { usePathname } from 'next/navigation'; // Importamos usePathname
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const dispatch = useDispatch();
+  const pathname = usePathname(); // Hook para obtener la ruta actual
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -18,11 +22,18 @@ const SearchBar = () => {
     }
   };
 
+  // Limpiar resultados cuando la búsqueda esté vacía
   useEffect(() => {
     if (searchQuery.trim() === '') {
       dispatch(clearMovies());
     }
   }, [searchQuery, dispatch]);
+
+  // Limpiar resultados y el texto del input cuando cambia la ruta
+  useEffect(() => {
+    dispatch(clearMovies()); // Limpiar los resultados de búsqueda
+    setSearchQuery(''); // Limpiar el texto del input
+  }, [pathname, dispatch]);
 
   return (
     <div className="flex items-center justify-center bg-gradient-to-br focus:border-acc">
@@ -36,7 +47,7 @@ const SearchBar = () => {
         />
         <button
           type="submit"
-          className="absolute top-0 right-0 bottom-0 my-auto h-8 w-10 px-3 bg-white/10 rounded-lg peer-focus:relative peer-focus:rounded-l-none ">
+          className="absolute top-0 right-0 bottom-0 my-auto h-8 w-10 px-3 bg-white/10 rounded-lg peer-focus:relative peer-focus:rounded-l-none">
           <BiSearchAlt className="text-white hover:text-accent" />
         </button>
       </form>
