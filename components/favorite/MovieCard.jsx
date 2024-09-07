@@ -1,10 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { FaPlay } from 'react-icons/fa';
 import { baseUrl } from '@/constants/movie';
+import ModalNoFavorites from '../modals/ModalNoFavorites';
+
 
 const MovieCard = ({ movie, handleDelete }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para el modal
+
+  const handlePlayClick = () => {
+    setIsModalOpen(true); // Abrir el modal al hacer clic en play
+  };
+
   return (
     <div className="flex flex-col rounded-lg shadow-xl overflow-hidden bg-primary/25 h-full">
       <div className="relative w-full h-64">
@@ -30,7 +39,9 @@ const MovieCard = ({ movie, handleDelete }) => {
             {movie.spoken_languages[0]?.english_name}
           </p>
           <div className="flex space-x-2">
-            <button className="h-10 w-10 flex items-center justify-center rounded-full bg-accent text-primary">
+            <button
+              onClick={handlePlayClick} // Abrir el modal al hacer clic en Play
+              className="h-10 w-10 flex items-center justify-center rounded-full bg-accent text-primary">
               <FaPlay className="h-4 w-4" />
             </button>
             <button
@@ -41,6 +52,13 @@ const MovieCard = ({ movie, handleDelete }) => {
           </div>
         </div>
       </div>
+
+      {/* Modal que se abre al hacer clic en Play */}
+      <ModalNoFavorites
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        movieData={movie}
+      />
     </div>
   );
 };
