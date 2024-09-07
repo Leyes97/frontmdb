@@ -1,13 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
 
 // Components
 import PopularMovies from '@/components/PopularMovies';
 import CinemaMovies from '@/components/CinemaMovies';
 import UpcomingMovies from '@/components/UpcomingMovies';
 import TopMovies from '@/components/TopMovies';
-import { useSelector } from 'react-redux';
 import SearchMovies from '@/components/SearchMovies';
 
 const Home = () => {
